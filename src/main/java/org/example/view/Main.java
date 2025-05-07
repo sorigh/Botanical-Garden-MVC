@@ -26,14 +26,15 @@ public class Main extends Application {
         // Init PlantView
         PlantRepository plantRepository = new PlantRepository();
         PlantModel plantModel = new PlantModel(plantRepository);
-        PlantController plantController = new PlantController(plantModel);
-        PlantView plantView = new PlantView(plantModel, plantController, locale);
+        PlantView plantView = new PlantView();
+        PlantController plantController = new PlantController(plantModel, plantView, locale);
+
 
         // Init SpecimenView
         SpecimenRepository specimenRepository = new SpecimenRepository();
         SpecimenModel specimenModel = new SpecimenModel(specimenRepository);
-        SpecimenController specimenController = new SpecimenController(specimenModel);
-        SpecimenView specimenView = new SpecimenView(specimenModel,specimenController,locale);
+        SpecimenView specimenView = new SpecimenView();
+        SpecimenController specimenController = new SpecimenController(specimenModel,specimenView,locale);
         // Dummy placeholders for Specimen and Garden views (replace with actual ones later)
         HBox gardenView = new HBox(new Button("Garden View - TBD"));
 
