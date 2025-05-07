@@ -3,8 +3,8 @@ package org.example.controller;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
-import org.example.dto.PlantDTO;
-import org.example.model.PlantModel;
+import org.example.controller.dto.PlantDTO;
+import org.example.model.viewmodel.PlantViewModel;
 import org.example.view.PlantView;
 
 import java.beans.PropertyChangeEvent;
@@ -14,12 +14,12 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class PlantController implements PropertyChangeListener {
-    private final PlantModel model;
+    private final PlantViewModel model;
     private final PlantView view;
     private Locale currentLocale;
     private ResourceBundle bundle;
 
-    public PlantController(PlantModel model, PlantView view, Locale locale) {
+    public PlantController(PlantViewModel model, PlantView view, Locale locale) {
         this.model = model;
         this.view = view;
         this.currentLocale = locale;
@@ -82,8 +82,8 @@ public class PlantController implements PropertyChangeListener {
                 RadioButton selected = (RadioButton) newToggle;
                 switch (selected.getText()) {
                     case "English" -> currentLocale = Locale.ENGLISH;
-                    case "Français" -> currentLocale = Locale.FRENCH;
-                    case "Română" -> currentLocale = new Locale("ro");
+                    case "Francais" -> currentLocale = Locale.FRENCH;
+                    case "Romana" -> currentLocale = new Locale("ro");
                 }
                 bundle = ResourceBundle.getBundle("lang.messages", currentLocale);
                 updateLanguage();

@@ -1,6 +1,5 @@
-package org.example.dto;
+package org.example.controller.dto;
 
-import org.example.dto.PlantDTO;
 import org.example.model.Plant;
 
 

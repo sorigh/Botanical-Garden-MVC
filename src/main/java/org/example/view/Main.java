@@ -7,10 +7,12 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import org.example.controller.GardenController;
 import org.example.controller.PlantController;
 import org.example.controller.SpecimenController;
-import org.example.model.PlantModel;
-import org.example.model.SpecimenModel;
+import org.example.model.viewmodel.GardenViewModel;
+import org.example.model.viewmodel.PlantViewModel;
+import org.example.model.viewmodel.SpecimenViewModel;
 import org.example.model.repository.PlantRepository;
 import org.example.model.repository.SpecimenRepository;
 
@@ -25,18 +27,20 @@ public class Main extends Application {
 
         // Init PlantView
         PlantRepository plantRepository = new PlantRepository();
-        PlantModel plantModel = new PlantModel(plantRepository);
+        PlantViewModel plantViewModel = new PlantViewModel(plantRepository);
         PlantView plantView = new PlantView();
-        PlantController plantController = new PlantController(plantModel, plantView, locale);
-
+        PlantController plantController = new PlantController(plantViewModel, plantView, locale);
 
         // Init SpecimenView
         SpecimenRepository specimenRepository = new SpecimenRepository();
-        SpecimenModel specimenModel = new SpecimenModel(specimenRepository);
-        //SpecimenView specimenView = new SpecimenView();
-        //SpecimenController specimenController = new SpecimenController(specimenModel,specimenView,locale);
-        // Dummy placeholders for Specimen and Garden views (replace with actual ones later)
-        HBox gardenView = new HBox(new Button("Garden View - TBD"));
+        SpecimenViewModel specimenViewModel = new SpecimenViewModel(specimenRepository);
+        SpecimenView specimenView = new SpecimenView();
+        SpecimenController specimenController = new SpecimenController(specimenViewModel, specimenView, locale);
+
+        // Init GardenView
+        GardenViewModel gardenViewModel = new GardenViewModel(plantRepository,specimenRepository);
+        GardenView gardenView = new GardenView();
+        GardenController gardenController = new GardenController(gardenViewModel, gardenView, locale);  // Fix this line
 
         // Navigation buttons
         Button buttonPlants = new Button("Plants");
@@ -53,8 +57,8 @@ public class Main extends Application {
 
         // Button actions
         buttonPlants.setOnAction(e -> root.setCenter(plantView.getView()));
-        //buttonSpecimens.setOnAction(e -> root.setCenter(specimenView.getView()));
-        buttonGarden.setOnAction(e -> root.setCenter(gardenView));
+        buttonSpecimens.setOnAction(e -> root.setCenter(specimenView.getView()));
+        buttonGarden.setOnAction(e -> root.setCenter(gardenView.getView()));  // Fix this line
 
         Scene scene = new Scene(root, 1000, 600);
         primaryStage.setScene(scene);

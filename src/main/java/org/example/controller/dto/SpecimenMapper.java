@@ -1,5 +1,4 @@
-package org.example.dto;
-import org.example.dto.SpecimenDTO;
+package org.example.controller.dto;
 import org.example.model.Specimen;
 
 public class SpecimenMapper {

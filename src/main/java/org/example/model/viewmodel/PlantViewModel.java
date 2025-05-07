@@ -1,18 +1,19 @@
-package org.example.model;
+package org.example.model.viewmodel;
 
-import org.example.dto.PlantDTO;
-import org.example.dto.PlantMapper;
+import org.example.controller.dto.PlantDTO;
+import org.example.controller.dto.PlantMapper;
+import org.example.model.Plant;
 import org.example.model.repository.PlantRepository;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.List;
 
-public class PlantModel {
+public class PlantViewModel {
     private final PlantRepository repository;
     private final PropertyChangeSupport support;
 
-    public PlantModel(PlantRepository repository) {
+    public PlantViewModel(PlantRepository repository) {
         this.repository = repository;
         this.support = new PropertyChangeSupport(this);
     }

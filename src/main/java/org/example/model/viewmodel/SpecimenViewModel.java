@@ -1,18 +1,19 @@
-package org.example.model;
+package org.example.model.viewmodel;
 
-import org.example.dto.SpecimenDTO;
-import org.example.dto.SpecimenMapper;
+import org.example.controller.dto.SpecimenDTO;
+import org.example.controller.dto.SpecimenMapper;
+import org.example.model.Specimen;
 import org.example.model.repository.SpecimenRepository;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.List;
 
-public class SpecimenModel {
+public class SpecimenViewModel {
     private final SpecimenRepository repository;
     private final PropertyChangeSupport support;
 
-    public SpecimenModel(SpecimenRepository repository) {
+    public SpecimenViewModel(SpecimenRepository repository) {
         this.repository = repository;
         this.support = new PropertyChangeSupport(this);
     }

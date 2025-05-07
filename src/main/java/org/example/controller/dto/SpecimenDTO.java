@@ -1,4 +1,4 @@
-package org.example.dto;
+package org.example.controller.dto;
 
 public class SpecimenDTO {
     private int specimen_id;

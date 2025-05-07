@@ -3,7 +3,7 @@ package org.example.view;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import org.example.dto.PlantDTO;
+import org.example.controller.dto.PlantDTO;
 
 public class PlantView {
     public final TableView<PlantDTO> plantTable = new TableView<>();
@@ -31,8 +31,8 @@ public class PlantView {
 
     public final ToggleGroup languageToggleGroup = new ToggleGroup();
     public final RadioButton englishButton = new RadioButton("English");
-    public final RadioButton frenchButton = new RadioButton("Français");
-    public final RadioButton romanianButton = new RadioButton("Română");
+    public final RadioButton frenchButton = new RadioButton("Francais");
+    public final RadioButton romanianButton = new RadioButton("Romana");
 
     public final VBox root = new VBox();
 
