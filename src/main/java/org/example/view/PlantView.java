@@ -109,8 +109,8 @@ public class PlantView implements PropertyChangeListener {
 
     private HBox createLanguageSelector() {
         RadioButton english = new RadioButton("English");
-        RadioButton french = new RadioButton("Français");
-        RadioButton romanian = new RadioButton("Română");
+        RadioButton french = new RadioButton("Francais");
+        RadioButton romanian = new RadioButton("Romana");
 
         english.setToggleGroup(languageToggleGroup);
         french.setToggleGroup(languageToggleGroup);

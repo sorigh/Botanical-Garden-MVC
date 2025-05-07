@@ -8,8 +8,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.example.controller.PlantController;
+import org.example.controller.SpecimenController;
 import org.example.model.PlantModel;
+import org.example.model.SpecimenModel;
 import org.example.model.repository.PlantRepository;
+import org.example.model.repository.SpecimenRepository;
 
 import java.util.Locale;
 
@@ -21,13 +24,17 @@ public class Main extends Application {
         Locale locale = Locale.ENGLISH;
 
         // Init PlantView
-        PlantRepository repo = new PlantRepository();
-        PlantModel model = new PlantModel(repo);
-        PlantController controller = new PlantController(model);
-        PlantView plantView = new PlantView(model, controller, locale);
+        PlantRepository plantRepository = new PlantRepository();
+        PlantModel plantModel = new PlantModel(plantRepository);
+        PlantController plantController = new PlantController(plantModel);
+        PlantView plantView = new PlantView(plantModel, plantController, locale);
 
+        // Init SpecimenView
+        SpecimenRepository specimenRepository = new SpecimenRepository();
+        SpecimenModel specimenModel = new SpecimenModel(specimenRepository);
+        SpecimenController specimenController = new SpecimenController(specimenModel);
+        SpecimenView specimenView = new SpecimenView(specimenModel,specimenController,locale);
         // Dummy placeholders for Specimen and Garden views (replace with actual ones later)
-        HBox specimenView = new HBox(new Button("Specimen View - TBD"));
         HBox gardenView = new HBox(new Button("Garden View - TBD"));
 
         // Navigation buttons
@@ -45,7 +52,7 @@ public class Main extends Application {
 
         // Button actions
         buttonPlants.setOnAction(e -> root.setCenter(plantView.getView()));
-        buttonSpecimens.setOnAction(e -> root.setCenter(specimenView));
+        buttonSpecimens.setOnAction(e -> root.setCenter(specimenView.getView()));
         buttonGarden.setOnAction(e -> root.setCenter(gardenView));
 
         Scene scene = new Scene(root, 1000, 600);

@@ -34,9 +34,12 @@ jar {
         attributes 'Main-Class': 'org.example.view.Main'
     }
 }
-
+tasks.withType(JavaExec) {
+    jvmArgs += ['-Dfile.encoding=UTF-8']
+}
 tasks.withType(JavaCompile) {
     options.compilerArgs << "-Xlint:deprecation"
+
 }
 
 test {
