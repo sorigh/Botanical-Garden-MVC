@@ -33,8 +33,8 @@ public class Main extends Application {
         // Init SpecimenView
         SpecimenRepository specimenRepository = new SpecimenRepository();
         SpecimenModel specimenModel = new SpecimenModel(specimenRepository);
-        SpecimenView specimenView = new SpecimenView();
-        SpecimenController specimenController = new SpecimenController(specimenModel,specimenView,locale);
+        //SpecimenView specimenView = new SpecimenView();
+        //SpecimenController specimenController = new SpecimenController(specimenModel,specimenView,locale);
         // Dummy placeholders for Specimen and Garden views (replace with actual ones later)
         HBox gardenView = new HBox(new Button("Garden View - TBD"));
 
@@ -53,7 +53,7 @@ public class Main extends Application {
 
         // Button actions
         buttonPlants.setOnAction(e -> root.setCenter(plantView.getView()));
-        buttonSpecimens.setOnAction(e -> root.setCenter(specimenView.getView()));
+        //buttonSpecimens.setOnAction(e -> root.setCenter(specimenView.getView()));
         buttonGarden.setOnAction(e -> root.setCenter(gardenView));
 
         Scene scene = new Scene(root, 1000, 600);

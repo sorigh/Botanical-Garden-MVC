@@ -76,13 +76,14 @@ public class PlantController implements PropertyChangeListener {
         });
 
         view.clearButton.setOnAction(e -> clearFields());
+
         ChangeListener<Toggle> languageListener = (obs, oldToggle, newToggle) -> {
             if (newToggle != null) {
                 RadioButton selected = (RadioButton) newToggle;
                 switch (selected.getText()) {
                     case "English" -> currentLocale = Locale.ENGLISH;
-                    case "Francais" -> currentLocale = Locale.FRENCH;
-                    case "Romana" -> currentLocale = new Locale("ro");
+                    case "Français" -> currentLocale = Locale.FRENCH;
+                    case "Română" -> currentLocale = new Locale("ro");
                 }
                 bundle = ResourceBundle.getBundle("lang.messages", currentLocale);
                 updateLanguage();
@@ -90,6 +91,7 @@ public class PlantController implements PropertyChangeListener {
         };
 
         view.languageToggleGroup.selectedToggleProperty().addListener(languageListener);
+
 
     }
 
