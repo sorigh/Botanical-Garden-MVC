@@ -3,17 +3,21 @@ package org.example.controller;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import org.example.controller.dto.SpecimenDTO;
+import org.example.model.Observer;
 import org.example.model.viewmodel.SpecimenViewModel;
 import org.example.view.SpecimenView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class SpecimenController implements PropertyChangeListener {
+public class SpecimenController {
     private final SpecimenViewModel model;
     private final SpecimenView view;
     private Locale currentLocale;
@@ -25,7 +29,7 @@ public class SpecimenController implements PropertyChangeListener {
         this.currentLocale = locale;
         this.bundle = ResourceBundle.getBundle("lang.messages", currentLocale);
 
-        model.addPropertyChangeListener(this);
+        model.addObserver(view);
         setupBindings();
         setupEventHandlers();
         load();
@@ -39,11 +43,33 @@ public class SpecimenController implements PropertyChangeListener {
         view.imageUrlColumn.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("imageUrl"));
         view.plantIdColumn.setCellValueFactory(new javafx.scene.control.cell.PropertyValueFactory<>("plant_id"));
 
+        // Image column cell factory to display images as actual images
+        view.imageUrlColumn.setCellFactory(column -> new TableCell<SpecimenDTO, String>() {
+            private final ImageView imageView = new ImageView();
+            @Override
+            protected void updateItem(String imageUrl, boolean empty) {
+                super.updateItem(imageUrl, empty);
+                if (empty || imageUrl == null || imageUrl.isEmpty()) {
+                    setGraphic(null);
+                } else {
+                    try {
+                        File file = new File(imageUrl);
+                        Image image = new Image(file.toURI().toString(), 100, 100, true, true);
+                        imageView.setImage(image);
+                        setGraphic(imageView);
+                    } catch (Exception e) {
+                        setGraphic(null);  // In case of an error, display nothing
+                    }
+                }
+            }
+        });
+
         // Selection handling
         table.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal != null) {
                 view.locationField.setText(newVal.getLocation());
                 view.imageUrlField.setText(newVal.getImageUrl());
+                view.plantIdField.setText(String.valueOf(newVal.getPlant_id()));  // Update plant ID field
             }
         });
 
@@ -94,20 +120,21 @@ public class SpecimenController implements PropertyChangeListener {
         model.loadSpecimens(); // This should fire a property change to update table
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if ("specimens".equals(evt.getPropertyName())) {
-            List<SpecimenDTO> updated = (List<SpecimenDTO>) evt.getNewValue();
-            view.specimenTable.setItems(FXCollections.observableArrayList(updated));
-            view.messageLabel.setText(bundle.getString("message.refreshed"));
-        }
-    }
-
     private SpecimenDTO getDTOFromFields() {
-        return new SpecimenDTO(0,
-                Integer.parseInt(view.plantIdColumn.getText()),
-                view.locationField.getText(),
-                view.imageUrlField.getText());
+        try {
+            return new SpecimenDTO(0,
+                    Integer.parseInt(view.plantIdField.getText()), // Use the correct input field for plant ID
+                    view.locationField.getText(),
+                    view.imageUrlField.getText());
+        } catch (NumberFormatException e) {
+            // Handle the case where the plantId input is not a valid number
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Input Error");
+            alert.setHeaderText("Invalid Plant ID");
+            alert.setContentText("Please enter a valid integer for Plant ID.");
+            alert.showAndWait();
+            return null;
+        }
     }
 
     private SpecimenDTO getDTOFromFieldsWithId() {

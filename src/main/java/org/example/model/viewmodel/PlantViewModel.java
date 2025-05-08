@@ -2,28 +2,31 @@ package org.example.model.viewmodel;
 
 import org.example.controller.dto.PlantDTO;
 import org.example.controller.dto.PlantMapper;
+import org.example.model.Observable;
 import org.example.model.Plant;
 import org.example.model.repository.PlantRepository;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
+
 import java.util.List;
 
-public class PlantViewModel {
+public class PlantViewModel extends Observable {
     private final PlantRepository repository;
-    private final PropertyChangeSupport support;
+    private List<PlantDTO> currentPlants;
 
     public PlantViewModel(PlantRepository repository) {
         this.repository = repository;
-        this.support = new PropertyChangeSupport(this);
     }
 
     public void loadPlants() {
         List<Plant> plants = repository.getTableContent();
-        List<PlantDTO> dtos = plants.stream()
+        currentPlants = plants.stream()
                 .map(PlantMapper::toDTO)
                 .toList();
-        support.firePropertyChange("plants", null, dtos);
+        notifyObservers();
+    }
+
+    public List<PlantDTO> getCurrentPlants() {
+        return currentPlants;
     }
 
     public void addPlant(PlantDTO dto) {
@@ -39,13 +42,5 @@ public class PlantViewModel {
     public void deletePlant(PlantDTO dto) {
         repository.deleteById(PlantMapper.toEntity(dto).getPlant_id());
         loadPlants();
-    }
-
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        support.addPropertyChangeListener(listener);
-    }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        support.removePropertyChangeListener(listener);
     }
 }

@@ -1,11 +1,17 @@
 package org.example.view;
 
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.example.controller.dto.PlantDTO;
+import org.example.model.Observable;
+import org.example.model.Observer;
+import org.example.model.viewmodel.PlantViewModel;
 
-public class PlantView {
+import java.util.List;
+
+public class PlantView implements Observer {
     public final TableView<PlantDTO> plantTable = new TableView<>();
     public final TableColumn<PlantDTO, Integer> idColumn = new TableColumn<>();
     public final TableColumn<PlantDTO, String> nameColumn = new TableColumn<>();
@@ -74,4 +80,17 @@ public class PlantView {
     public VBox getView() {
         return root;
     }
+
+    @Override
+    public void update(Observable observable) {
+        if (observable instanceof PlantViewModel viewModel) {
+            List<PlantDTO> updated = viewModel.getCurrentPlants();
+            plantTable.setItems(FXCollections.observableArrayList(updated));
+            messageLabel.setText("Refreshed!"); // Or inject a ResourceBundle if needed
+
+            // Print output message when observer is triggered
+            System.out.println("Observer triggered: Plant table refreshed.");
+        }
+    }
+
 }

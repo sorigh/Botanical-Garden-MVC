@@ -6,8 +6,9 @@ import org.example.controller.dto.PlantDTO;
 import org.example.controller.dto.PlantMapper;
 import org.example.controller.dto.SpecimenDTO;
 import org.example.controller.dto.SpecimenMapper;
+import org.example.model.Observable;
 import org.example.model.Plant;
-import org.example.model.PlantExporter;
+import org.example.controller.PlantExporter;
 import org.example.model.Specimen;
 import org.example.model.repository.PlantRepository;
 import org.example.model.repository.SpecimenRepository;
@@ -16,7 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-public class GardenViewModel {
+public class GardenViewModel extends Observable {
     private final PlantRepository plantRepository;
     private final SpecimenRepository specimenRepository;
 
@@ -56,21 +57,6 @@ public class GardenViewModel {
         return filtered;
     }
 
-    public void searchSpecimens(String query) {
-        List<Specimen> allSpecimens = specimenRepository.getTableContent();
-
-        List<SpecimenDTO> filtered = allSpecimens.stream()
-                .map(SpecimenMapper::toDTO)
-                .filter(s -> query == null || query.isBlank() || (
-                        String.valueOf(s.getSpecimen_id()).contains(query) ||
-                                String.valueOf(s.getPlant_id()).contains(query) ||
-                                s.getLocation().toLowerCase().contains(query.toLowerCase())
-                ))
-                .collect(Collectors.toList());
-
-        specimens.setAll(filtered);
-    }
-
     public List<String> getAvailablePlantTypes() {
         return plantRepository.getTableContent().stream()
                 .map(Plant::getType)
@@ -78,22 +64,14 @@ public class GardenViewModel {
                 .collect(Collectors.toList());
     }
 
-    public void exportPlantsToCSV(String filePath) {
-        List<Plant> allPlants = plantRepository.getTableContent();
-        PlantExporter.exportToCSV(allPlants, filePath);
-    }
-
-    public void exportPlantsToDOC(String filePath) {
-        List<Plant> allPlants = plantRepository.getTableContent();
-        PlantExporter.exportToDOC(allPlants, filePath);
-    }
-
     public void exportToCSV() {
         PlantExporter.exportToCSV(plantRepository.getTableContent(),"plants.csv");
+        notifyObservers();
     }
 
     public void exportToDOC() {
         PlantExporter.exportToDOC(plantRepository.getTableContent(),"plants.docx");
+        notifyObservers();
     }
 
     public List<String> getAvailableTypes() {

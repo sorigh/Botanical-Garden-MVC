@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class PlantController implements PropertyChangeListener {
+public class PlantController {
     private final PlantViewModel model;
     private final PlantView view;
     private Locale currentLocale;
@@ -25,7 +25,7 @@ public class PlantController implements PropertyChangeListener {
         this.currentLocale = locale;
         this.bundle = ResourceBundle.getBundle("lang.messages", currentLocale);
 
-        model.addPropertyChangeListener(this);
+        model.addObserver(view);
         setupBindings();
         setupEventHandlers();
         load();
@@ -97,15 +97,6 @@ public class PlantController implements PropertyChangeListener {
 
     public void load() {
         model.loadPlants(); // This should fire a property change to update table
-    }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        if ("plants".equals(evt.getPropertyName())) {
-            List<PlantDTO> updated = (List<PlantDTO>) evt.getNewValue();
-            view.plantTable.setItems(FXCollections.observableArrayList(updated));
-            view.messageLabel.setText(bundle.getString("message.refreshed"));
-        }
     }
 
     private PlantDTO getDTOFromFields() {

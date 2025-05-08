@@ -1,12 +1,19 @@
 package org.example.view;
 
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import org.example.controller.dto.PlantDTO;
 import org.example.controller.dto.SpecimenDTO;
+import org.example.model.Observable;
+import org.example.model.Observer;
+import org.example.model.viewmodel.GardenViewModel;
+import org.example.model.viewmodel.PlantViewModel;
 
-public class GardenView {
+import java.util.List;
+
+public class GardenView implements Observer {
     // Plant table and columns
     public final TableView<PlantDTO> plantTable = new TableView<>();
     public final TableColumn<PlantDTO, Integer> idColumn = new TableColumn<>("Id");
@@ -105,5 +112,15 @@ public class GardenView {
 
     public GridPane getView() {
         return root;
+    }
+
+    @Override
+    public void update(Observable observable) {
+        if (observable instanceof GardenViewModel viewModel) {
+            messageLabel.setText("Export Generated!");
+
+            // Print output message when observer is triggered
+            System.out.println("Observer triggered: Export Generated.");
+        }
     }
 }
